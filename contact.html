@@ -1,0 +1,487 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="./assets/js/echarts.js"></script>
+    <script src="./assets/js/china.js"></script>  
+    <title>中国戏曲</title>
+    <!-- Google fonts -->
+    <!-- <link href=//fonts.googleapis.com/css2?family=Londrina+Outline&display=swap" rel="stylesheet"> -->
+    <!-- Template CSS Style link -->
+    <link rel="stylesheet" href="assets/css/style-starter.css">
+    <style>
+        .maxbox{
+            width: 100%;
+            height: 500px;
+        }
+        .store,.storeMain,.echart{
+            width: 100%;
+            height: 150%;
+        }
+        body{
+            background-color: rgb(187, 181,172 );
+        }
+    </style>
+</head>
+
+<body >
+ 
+    <!-- header -->
+    <header id="site-header" class="fixed-top" style="top:0px;">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="index.html">
+                    <i class="fas fa-music me-1"></i>中国戏曲
+                </a>
+                
+                <div class="collapse navbar-collapse" id="navbarScroll">
+                    <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="index.html">首页</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">排行榜</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="classes.html">受众及发展历程</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.html">种类及流行区</a>
+                        </li>
+                    </ul>
+                    <form action="#error" method="GET" class="d-flex search-header ms-lg-2">
+                        <input class="form-control" type="search" placeholder="请输入..." aria-label="Search"
+                            required>
+                        <button class="btn btn-style" type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+                <!-- toggle switch for light and dark theme -->
+                <div class="cont-ser-position">
+                    <nav class="navigation">
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="checkbox">
+                                <input type="checkbox" id="checkbox">
+                                <div class="mode-container">
+                                    <i class="gg-sun"></i>
+                                    <i class="gg-moon"></i>
+                                </div>
+                            </label>
+                        </div>
+                    </nav>
+                </div>
+                <!-- //toggle switch for light and dark theme -->
+            </nav>
+        </div>
+    </header>
+   <div class="maxbox">
+    <div class="store">
+        <div class="storeMain">
+            <div style="height: 80%;">
+            <div id="china-map" class="echart" style="height: 100%;"></div>
+            </div>
+        </div>
+    </div>
+   </div>
+    <!-- about section -->
+    <section class="w3l-about py-5" id="about";background-color: rgb(248, 249, 244);>
+        <div class="container py-lg-5 py-md-4 py-2">
+            <div class="row align-items-center">
+                <div class="col-lg-6 section-width pe-xl-5 pt-lg-4" style="height:250px" style="left:30px">
+                    <h2 class="title-style">中国戏曲 <span>--主要流行区</span></h2>0
+                    <h5>《华戏曲》丛书由中国戏曲家协会主编、<h5> 
+                    <h5>社会科学文献出版社编辑出版，扬州古 </h5>
+                    <h5>籍线装科技文化公司编辑，印刷，发行。</h5>                 
+                </div>
+            </div>
+        </div>
+        <div id="main2" style="height:800px;">
+            <h3 class="title-style text-capitalize text-center">Our expert <span>team</span> will help <span>you</span>
+            </h3>
+        </div> 
+        <script>
+            function drawCharts() {
+                // 基于准备好的dom，初始化echarts实例
+                var chinaMap = echarts.init(document.getElementById("china-map"));
+                window.onresize = chinaMap.resize; // 窗口或框架被调整大小时执行chinaMap.resize
+                chinaMap.setOption({
+                    // 进行相关配置
+                    tooltip: {
+                        formatter: function (params) {
+                            if(params.data != undefined) {
+                                return `戏曲名称：${params.data.label}</br>地区名称：${params.data.name}`
+                            }else {
+                                params.data = {
+                                    label:'xxx',
+                                    name:'xxx',
+                                    value:0
+                                }
+                            }
+                        }
+                    }, // 鼠标移到图里面的浮动提示框
+                    dataRange: {
+                        show: false,
+                        min: 0,
+                        max: 1000,
+                        text: ["High", "Low"],
+                        realtime: true,
+                        calculable: true,
+    
+                        splitNumber: 0,
+                        orient: 'horizontal',
+                    },
+                    geo: {
+                        // 这个是重点配置区
+                        map: "china", // 表示中国地图
+                        roam: false, // 禁止滚轮放大
+                        label: {
+                            normal: {
+                                show: false, // 是否显示对应地名
+                                textStyle: {
+                                    color: "#fff",
+                                },
+                            },
+                        },
+                        itemStyle: {
+                            normal: {
+                                borderColor: "#fff",
+                                borderWidth: "1",
+                                areaColor: "#f7ccc2",
+                            },
+                            emphasis: {
+                                areaColor: '#f55a3f', // 鼠标滑过颜色
+                                shadowOffsetX: 0,
+                                shadowOffsetY: 0,
+                                shadowBlur: 20,
+                                borderWidth: 0,
+                                shadowColor: "rgba(0, 0, 0, 0.5)",
+                            },
+                        },
+                    },
+                    series: [
+                        {
+                            type: "scatter",
+                            coordinateSystem: "geo", // 对应上方配置
+                        },
+                        {
+                            type: "map",
+                            geoIndex: 0,
+                            data: [
+                                {
+                                    name: "北京",
+                                    value: 599,
+                                    tooltip: 10,
+                                    label: '京剧'
+                                },
+                                {
+                                    name: "上海",
+                                    value: 142,
+                                    label: '沪剧'
+                                },
+                                {
+                                    name: "黑龙江",
+                                    value: 123,
+                                    label: '京剧'
+                                },
+                                {
+                                    name: "深圳",
+                                    value: 92,
+                                    label: '豫剧'
+                                },
+                                {
+                                    name: "陕西",
+                                    value: 700,
+                                    label: '豫剧',
+                                    itemStyle: { normal: { areaColor: "pink" } }
+                                },
+                                {
+                                    name: "四川",
+                                    value: 453,
+                                    label: '川剧',
+                                },
+                                {
+                                    name: "西藏",
+                                    value: 453,                             
+                                },
+                                {
+                                    name: "新疆",
+                                    value: 92,
+                                    label: '秦腔',
+                                },
+                                {
+                                    name: "青海",
+                                    value: 300,
+                                    label: '秦腔',
+                                },
+                                {
+                                    name: "陕西",
+                                    value: 300,
+                                    label: '秦腔',
+                                },
+                                {
+                                    name: "甘肃",
+                                    value: 354,
+                                    label: '秦腔',
+                                },
+                                {
+                                    name: "云南",
+                                    value: 300,
+                                    label: '滇剧',
+                                },
+                                {
+                                    name: "贵州",
+                                    value: 330,
+                                },
+                                 {
+                                    name: "广西",
+                                    value: 300,
+                                    label: '粤剧',
+                                },
+                                {
+                                    name: "广东",
+                                    value: 300,
+                                    label: '粤剧',
+                                },
+                                {
+                                    name: "福建",
+                                    value: 430,
+                                    label: '湘剧',
+                                },
+                                {
+                                    name: "河南",
+                                    value: 300,
+                                    label: '豫剧',
+                                },
+                                {
+                                    name: "内蒙古",
+                                    value: 300,
+                                    label: '黄梅戏',
+                                },
+                                {
+                                    name: "山西",
+                                    value: 300,
+                                    label: '晋剧',
+                                },
+                                {
+                                    name: "宁夏",
+                                    value: 453,
+                                    label: '秦腔',
+                                },
+                                {
+                                    name: "重庆",
+                                    value: 300,
+                                    label: '川剧',
+                                },
+                                {
+                                    name: "湖南",
+                                    value: 300,
+                                    label: '湘剧',
+                                },
+                                {
+                                    name: "湖北",
+                                    value: 300,
+                                    label: '楚剧',
+                                },
+                                {
+                                    name: "江西",
+                                    value: 300,
+
+                                    
+                                },
+                                {
+                                    name: "安徽",
+                                    value: 300,
+                                    label: '锡剧',
+                                },
+                                {
+                                    name: "河北",
+                                    value: 123,
+                                    label: '京剧'
+                                },
+                            ],
+                        },
+                    ],
+                });
+                window.addEventListener("resize", function () {
+                    chinaMap.resize();
+                });
+            }
+            drawCharts()
+            
+            var myChart = echarts.init(document.getElementById('main2'),'vintage');
+            var option;
+
+     data = [
+  [
+    [28604, 77, 978958237, '京剧'],
+    [21163, 50, 878958237, '越剧'],
+    [25160, 30, 778958237, '黄梅戏'],
+    [13670, 74, 178958237, '河南梆子'],
+    [28599, 20, 378958237, '越调'],
+    [29476, 55, 178958237, '潮剧'],
+    [21476, 60, 178958237, '晋剧'],
+    [28666, 35, 178958237, '桂剧'],
+    [37773, 65, 478958237, '昆剧'],
+    [29550, 43, 678958237, '豫剧'],
+    [19349, 32,178958237, '秦腔'],
+    [10670, 66, 178958237, '川剧'],
+    [26424, 58, 178958237, '汉剧'],
+    [14062, 34, 578958237, '评剧'],
+    [12062, 24, 358958237, '曲剧'],
+    [18062, 74, 278958237, '吕剧']
+  ],
+
+];
+     option = {
+     
+  title: {
+    text: '中国传统戏曲种类',
+    left: '50%',
+    top: '2%'
+  },
+  legend: {
+    right: '10%',
+    top: '3%',
+    data: ['种类', ]
+  },
+  grid: {
+    left: '8%',
+    top: '10%'
+  },
+  xAxis: {
+   
+  
+        type: 'value',
+        name: '戏曲受众影响',
+      
+    
+  },
+  yAxis: {
+        type: 'value',
+        name: '位置',
+  },
+  series: [
+    {
+      name: '种类',
+      data: data[0],
+      type: 'scatter',
+      symbolSize: function (data) {
+        return Math.sqrt(data[2]) / 5e2;
+      },
+      emphasis: {
+        focus: 'series',
+        label: {
+          show: true,
+          formatter: function (param) {
+            return param.data[3];
+          },
+          position: 'top'
+        }
+      },
+      itemStyle: {
+        shadowBlur: 10,
+        shadowColor: 'rgba(120, 36, 50, 0.5)',
+        shadowOffsetY: 5,
+        color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
+          {
+            offset: 0,
+            color: 'rgb(251, 118, 123)'
+          },
+          {
+            offset: 1,
+            color: 'rgb(204, 46, 72)'
+          }
+        ])
+      }
+    },
+    
+  ]
+};
+
+      option && myChart.setOption(option);
+        </script>
+    </section>
+
+    <!-- team section -->
+
+    
+    <button onclick="topFunction()" id="movetop" title="Go to top">
+        <span class="fas fa-level-up-alt" aria-hidden="true"></span>
+    </button>
+    <script>
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () {
+            scrollFunction()
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("movetop").style.display = "block";
+            } else {
+                document.getElementById("movetop").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+    <!-- //move top -->
+
+    <!-- common jquery plugin -->
+    <script src="assets/js/jquery-3.3.1.min.js"></script>
+    <script src="assets/js/theme-change.js"></script>
+    <!-- //theme switch js (light and dark)-->
+
+    <!-- MENU-JS -->
+    <script>
+        $(window).on("scroll", function () {
+            var scroll = $(window).scrollTop();
+
+            if (scroll >= 80) {
+                $("#site-header").addClass("nav-fixed");
+            } else {
+                $("#site-header").removeClass("nav-fixed");
+            }
+        });
+
+        //Main navigation Active Class Add Remove
+        $(".navbar-toggler").on("click", function () {
+            $("header").toggleClass("active");
+        });
+        $(document).on("ready", function () {
+            if ($(window).width() > 991) {
+                $("header").removeClass("active");
+            }
+            $(window).on("resize", function () {
+                if ($(window).width() > 991) {
+                    $("header").removeClass("active");
+                }
+            });
+        });
+    </script>
+    <!-- //MENU-JS -->
+
+    <!-- disable body scroll which navbar is in active -->
+    <script>
+        $(function () {
+            $('.navbar-toggler').click(function () {
+                $('body').toggleClass('noscroll');
+            })
+        });
+    </script>
+    <!-- //disable body scroll which navbar is in active -->
+
+    <!-- bootstrap -->
+    
+    <!-- //bootstrap -->
+    <!-- //Js scripts -->
+</body>
+
+</html>
